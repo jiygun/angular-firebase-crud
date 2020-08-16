@@ -1,0 +1,23 @@
+{
+  "name": "angular-firebase-crud",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^10.0.6",
+    "@angular/core": "^10.0.6"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "firebase": "^7.18.0",
+    "rxjs": "~6.5.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jiygun/angular-firebase-crud.git"
+  },
+  "keywords": [
+    "angular",
+    "firebase",
+    "crud"
+  ],
+  "author": "Jiyan Güngen"
+}
