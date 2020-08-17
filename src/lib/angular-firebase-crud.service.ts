@@ -12,7 +12,7 @@ export class AngularFirebaseCrudService implements Database {
 
   constructor(private fireStore:AngularFirestore) { }
 
-  insert(url: string, data: object):Observable<any>{
+  insert(url: string, data: any):Observable<any>{
     return new Observable((observer)=>{
       this.fireStore.collection(url).add(data).then(result=>observer.next(result)).catch(error=>observer.error(error));
     });

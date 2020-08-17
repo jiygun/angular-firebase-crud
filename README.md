@@ -54,7 +54,7 @@ new QueryModel("endBefore",null,null,"your pos")
 
 Insert
 ```hs
-this.firebaseService.insert("Your firebase Path",Object Or Class).subscribe(res=>...);
+this.firebaseService.insert("Your firebase Path",Object Or JSON).subscribe(res=>...);
 ```
 Get
 
@@ -75,7 +75,7 @@ this.firebaseService.valueChanges("Your firebase Path",Your query Models).subscr
 ```
 Update
 ```hs
-this.firebaseService.update("Your firebase Path",Object Or Class,Your query Models).subscribe(res=>...);
+this.firebaseService.update("Your firebase Path",Object Or JSON,Your query Models).subscribe(res=>...);
 ```
 Delete
 
