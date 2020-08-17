@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { Database } from './database';
 import { QueryModel } from './query.model';
-import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,58 +10,58 @@ export class AngularFirebaseCrudService implements Database {
 
   constructor(private fireStore:AngularFirestore) { }
 
-  insert(url: string, data: any):Observable<any>{
-    return new Observable((observer)=>{
-      this.fireStore.collection(url).add(data).then(result=>observer.next(result)).catch(error=>observer.error(error));
+  insert(url: string, data: any):Promise<any>{
+    return new Promise((resolve,reject)=>{
+      this.fireStore.collection(url).add(data).then(result=>resolve(result)).catch(error=>reject(error));
     });
   }
-  get(url: string, ...filters: Array<QueryModel>):Observable<Array<any>>{
-    return new Observable((observer)=>{
+  get(url: string, ...filters: Array<QueryModel>):Promise<Array<any>>{
+    return new Promise((resolve,reject)=>{
       this.fireStore.collection(url,ref=>(this.generateQueryOrder(ref,filters))).snapshotChanges().subscribe(result=>{
         let resultList=new Array();
         result.forEach((e:any) => {
           resultList.push(e.payload.doc.data());
         });
-        observer.next(resultList);
-      },error=>{observer.error(error)});
+        resolve(resultList);
+      },error=>reject(error));
     });
   }
-  valueChanges(url:string,...filters: Array<QueryModel>):Observable<any>{
-    return new Observable((observer)=>{
-      this.fireStore.collection(url,ref=>(this.generateQueryOrder(ref,filters))).valueChanges().pipe().subscribe(result=>observer.next(result),error=>observer.error(error));
+  valueChanges(url:string,...filters: Array<QueryModel>):Promise<any>{
+    return new Promise((resolve,reject)=>{
+      this.fireStore.collection(url,ref=>(this.generateQueryOrder(ref,filters))).valueChanges().pipe().subscribe(result=>resolve(result),error=>reject(error));
     });
   }
-  update(url: string,data: any,...filters:Array<QueryModel>):Observable<any> {
-    return new Observable((observer)=>{
-      this.getFirebaseIds(url,filters).subscribe((fireBaseIds:Array<any>)=>{
+  update(url: string,data: any,...filters:Array<QueryModel>):Promise<any> {
+    return new Promise((resolve,reject)=>{
+      this.getFirebaseIds(url,filters).then((fireBaseIds:Array<any>)=>{
         const promises=new Array();
         fireBaseIds.forEach(e => {
           promises.push(this.fireStore.collection(url).doc(e).update(data));
         });
-        forkJoin(promises).subscribe(result=>observer.next(result),error=>observer.error(error));
-      },error=>observer.error(error));
+        Promise.all(promises).then(res=>resolve(res)).catch(err=>reject(err));
+      }).catch(error=>reject(error));
     });
   }
-  delete(url: string,...filters:Array<QueryModel>) {
-    return new Observable((observer)=>{
-      this.getFirebaseIds(url,filters).subscribe((fireBaseIds:Array<any>)=>{
+  delete(url: string,...filters:Array<QueryModel>):Promise<any> {
+    return new Promise((resolve,reject)=>{
+      this.getFirebaseIds(url,filters).then((fireBaseIds:Array<any>)=>{
         const promises=new Array();
         fireBaseIds.forEach(e => {
           promises.push(this.fireStore.collection(url).doc(e).delete());
         });
-        forkJoin(promises).subscribe(result=>observer.next(result),error=>observer.error(error));
-      },error=>observer.error(error));
+        Promise.all(promises).then(res=>resolve(res)).catch(err=>reject(err));
+      }).catch(error=>reject(error));
     });
   }
-  private getFirebaseIds(url: string,filters: Array<QueryModel>):Observable<any>{
-    return new Observable((observer)=>{
+  private getFirebaseIds(url: string,filters: Array<QueryModel>):Promise<any>{
+    return new Promise((resolve,reject)=>{
       this.fireStore.collection(url,ref=>(this.generateQueryOrder(ref,filters))).snapshotChanges().subscribe(result=>{
         let fireBaseIds=new Array();
         result.forEach((e:any) => {
           fireBaseIds.push(e.payload.doc.id);
         });
-        observer.next(fireBaseIds);
-    },error=>observer.error(error));
+        resolve(fireBaseIds);
+    },error=>reject(error));
     });
   }
   private generateQueryOrder(ref,filters:Array<QueryModel>){
