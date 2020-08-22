@@ -54,28 +54,28 @@ new QueryModel("endBefore",null,null,"your pos")
 
 Insert
 ```hs
-this.firebaseService.insert("Your firebase Path",Object Or JSON).then(res=>...).catch(err=>...);
+this.firebaseService.insert("Your firebase Path",Object Or JSON).pipe(...).subscribe(res=>...);
 ```
 Get
 
  - İf you used without query models this would get all selected collection in firebase.
 
 ```hs
-this.firebaseService.get("Your firebase Path",Your query Models).then(res=>(resolve is object)...).catch(err=>...);
+this.firebaseService.get("Your firebase Path",Your query Models).pipe(...).subscribe(res=>...);
 
 Example :
-this.firebaseService.get("myPath").then(res=>(resolve is object)).catch(err=>...);
+this.firebaseService.get("myPath").pipe(...).subscribe(res=>...);
 
-this.firebaseService.get("myPath",new QueryModel("where","myFirstCloumn","==",10),QueryModel("where","mySecondCloumn",">=",3),QueryModel("orderBy","myThirdCloumn","asc"),QueryModel("limit",null,null,3)).then(res=>(resolve is object)).catch(err=>...);
+this.firebaseService.get("myPath",new QueryModel("where","myFirstCloumn","==",10),QueryModel("where","mySecondCloumn",">=",3),QueryModel("orderBy","myThirdCloumn","asc"),QueryModel("limit",null,null,3)).pipe(...).subscribe(res=>...);
 ```
 
 Value Changes
 ```hs
-this.firebaseService.valueChanges("Your firebase Path",Your query Models).then(res=>(resolve is object)...).catch(err=>...);
+this.firebaseService.valueChanges("Your firebase Path",Your query Models).pipe(...).subscribe(res=>...);
 ```
 Update
 ```hs
-this.firebaseService.update("Your firebase Path",Object Or JSON,Your query Models).then(res=>...).catch(err=>...);
+this.firebaseService.update("Your firebase Path",Object Or JSON,Your query Models).pipe(...).subscribe(res=>...);
 ```
 Delete
 
@@ -83,5 +83,5 @@ Delete
  - İf you requested without query model this would delete all selected collection in firebase.
 
 ```hs
-this.firebaseService.delete("Your firebase Path",Your query Models).then(res=>...).catch(err=>...);
+this.firebaseService.delete("Your firebase Path",Your query Models).pipe(...).subscribe(res=>...);
 ```
