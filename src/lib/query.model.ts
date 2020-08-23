@@ -39,21 +39,21 @@ export class QueryModel{
     }
     getQueryModel(ref):CollectionReference{
         if(this._query=="where"){
-            return ref.where(this._querySection,this._queryOrder,this._data);
+            return ref.where(this._querySection,this._queryOrder,this._data)
         }else if(this._query=="orderBy"){
-            return ref.orderBy(this._querySection,this._queryOrder);
+            return ref.orderBy(this._querySection,this._queryOrder)
         }else if(this._query=="limit"){
-            return ref.limit(this._data);
+            return ref.limit(this._data)
         }else if(this._query=="startAt"){
-            return ref.startAt(this._data);
+            return ref.startAt(this._data)
         }else if(this._query=="startAfter"){
-            return ref.startAfter(this._data);
+            return ref.startAfter(this._data)
         }else if(this._query=="endAt"){
-            return ref.endAt(this._data);
+            return ref.endAt(this._data)
         }else if(this._query=="endBefore"){
-            return ref.endBefore(this._data);
+            return ref.endBefore(this._data)
         }else{
-            return ref;
+            return ref
         }
     }
 }

@@ -67,10 +67,11 @@ export class AngularFirebaseCrudService implements Database {
     },error=>observe.error(error));
     });
   }
-  private getQueryOrder(ref:CollectionReference,filters:Array<QueryModel>):CollectionReference{
-    let queryOrder:CollectionReference=ref;
+  private getQueryOrder(ref,filters:Array<QueryModel>){
+    if(filters.length==1&&filters[0]!=null&&filters[0]!=undefined) return filters[0].getQueryModel(ref);
+    let queryOrder=ref;
     filters.length>0?filters.reduce((result,item)=>{
-      queryOrder=item.getQueryModel(queryOrder);
+      queryOrder=item!=null&&item!=undefined?item.getQueryModel(queryOrder):queryOrder;
       return result;
     }):null;
     return queryOrder;
